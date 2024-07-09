@@ -6,11 +6,19 @@
 #include <dt-bindings/zmk/bt.h>
 
 // Home row mods macro
-#define HRML(k1,k2,k3,k4) &ht LSHFT k1  &ht LALT k2  &ht LCTRL k3  &ht LGUI k4
-#define HRMR(k1,k2,k3,k4) &ht RGUI k1  &ht RCTRL k2  &ht RALT k3  &ht RSHFT k4
+#define HRML(k1,k2,k3,k4) &ht LGUI k1  &ht LALT k2  &ht LCTRL k3  &ht LSHFT k4
+#define HRMR(k1,k2,k3,k4) &ht RSHFT k1  &ht RCTRL k2  &ht RALT k3  &ht RGUI k4
+#define SHIFTS (MOD_LSFT|MOD_RSFT)
+
+// Layers
+#define BASE 0
+#define ALTER 1
+#define FUNC 2
+#define SYSTEM 3
 
 / {
     behaviors {
+
         ht: hold_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -20,82 +28,180 @@
             require-prior-idle-ms = <100>;
             bindings = <&kp>, <&kp>;
         };
-    };
 
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        tri_layer {
-            if-layers = <1 2>;
-            then-layer = <3>;
+        af: alter_function {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp ALTER>, <&kp FUNC>;
+            mods = <SHIFTS>;
         };
+
+        be: backspace_escape {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp BSPC>, <&kp ESC>;
+            mods = <SHIFTS>;
+        };
+
+        st: space_tab {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp SPACE>, <&kp TAB>;
+            mods = <SHIFTS>;
+        };
+
+        ss: shift_slash {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp FSLH>, <&kp BSLH>;
+            mods = <SHIFTS>;
+        };
+
+        uc: underscore_colon {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp UNDER>, <&kp COLON>;
+            mods = <SHIFTS>;
+        };
+
+        ZERO: caret_zero {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp CARET>, <&kp N0>;
+            mods = <SHIFTS>;
+        };
+
+        ONE: rpar_one {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp RPAR>, <&kp N1>;
+            mods = <SHIFTS>;
+        };
+
+        TWO: rbrc_two {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp RBRC>, <&kp N2>;
+            mods = <SHIFTS>;
+        };
+
+        THREE: rbkt_three {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp RBKT>, <&kp N3>;
+            mods = <SHIFTS>;
+        };
+
+        FOUR: semi_four {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp SEMI>, <&kp N4>;
+            mods = <SHIFTS>;
+        };
+
+        FIVE: at_five {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp AT>, <&kp N5>;
+            mods = <SHIFTS>;
+        };
+
+        SIX: tilde_six {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp TILDE>, <&kp N6>;
+            mods = <SHIFTS>;
+        };
+
+        SEVEN: excl_seven {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp EXCL>, <&kp N7>;
+            mods = <SHIFTS>;
+        };
+
+        EIGHT: qmark_eight {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp QMARK>, <&kp N8>;
+            mods = <SHIFTS>;
+        };
+
+        NINE: dot_nine {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp DOT>, <&kp N9>;
+            mods = <SHIFTS>;
+        };
+
     };
 
     keymap {
         compatible = "zmk,keymap";
-        default_layer {
+        base_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  Q       │  W       │  E       │  R       │  T       │   │  Y       │  U       │  I       │  O       │  P       │
             &kp Q      &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │ ' "      │
-            HRML(A,        S,         D,         F)     &kp G          &kp H      HRMR(J,        K,         L,        SQT)
+        //│  X       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │  _ :     │
+            HRML(X,     S,         D,         F)        &kp G          &kp H      HRMR(J,     K,         L,        &uc)
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ / ?      │
-            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp FSLH
+        //│  Z       │  , <     │  C       │  V       │  B       │   │  N       │  M       │  A       │ . >      │ / \      │
+            &kp Z      &kp COMMA  &kp C      &kp V      &kp B          &kp N      &kp M      &kp A      &kp DOT    &ss
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                            &lt 2 TAB   &kp ENTER     &kp SPACE  &lt 1 BSPC
+                                             &af        &be            &st        &kp ENTER
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        right_layer {
+        alter_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ INSERT   │  1       │  2       │  3       │          │   │ HOME     │ PAGE DN  │ PAGE UP  │ END      │  :       │
-            &kp INS    &kp N1     &kp N2     &kp N3     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &kp COLON
+        //│  *       │  -       │  +       │  "       │  %       │   │  #       │  ; 4     │  @ 5     │  ~ 6     │  `       │
+            &kp ASTRK  &kp MINUS  &kp PLUS   &kp DQT    &kp PRCNT      &kp HASH   &FOUR      &FIVE      &SIX       &kp GRAVE
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ DELETE   │  4       │  5       │  6       │          │   │ LEFT     │ DOWN     │ UP       │ RIGHT    │  ;       │
-            &kp DEL    &kp N4     &kp N5     &kp N6     &trans         &kp LARW   &kp DARW   &kp UARW   &kp RARW   &kp SEMI
+        //│  <       │  [       │  {       │  (       │  $       │   │  ^ 0     │  ) 1     │  } 2     │  ] 3     │  >       │
+            HRML(LT,    LBKT,      LBRC,      LPAR)     &kp DLLR       &ZERO      HRMR(&ONE,  &TWO,     &THREE,     GT)
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ CAPS     │  7       │  8       │  9       │  0       │   │          │          │          │          │          │
-           &caps_word  &kp N7     &kp N8     &kp N9     &kp N0         &trans     &trans     &trans     &trans     &trans
+        //│  :       │  ,       │  =       │  '       │  &       │   │  |       │  ! 7     │  ? 8     │  . 9     │  /       │
+            &kp COLON &kp COMMA  &kp EQUAL  &kp SQT     &kp AMPS       &kp PIPE   &SEVEN     &EIGHT     &NINE      &kp FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &kp ESC        &trans     &trans
+                                             &kp BASE   &be            &st        &kp ENTER
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        left_layer {
+        func_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │  [       │  {       │  }       │          │   │  ^       │  (       │  )       │  ]       │  ~       │
-            &trans     &kp LBKT   &kp LBRC   &kp RBRC   &trans         &kp CARET  &kp LPAR   &kp RPAR   &kp RBKT   &kp TILDE
+        //│          │  Bri--   │  Up      │  Bri++   │  Vol--   │   │  F3      │  F4      │  F5      │  F6      │          │
+            &none      &kp C_BRI_DN &kp UP &kp C_BRI_UP &kp C_VOL_DN   &kp F3     &kp F4     &kp F5     &kp F6     &none
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  !       │  @       │  #       │  $       │  %       │   │  *       │  -       │  =       │  \       │  `       │
-            &kp EXCL   &kp AT     &kp HASH   &kp DLLR   &kp PRCNT      &kp ASTRK  &kp MINUS  &kp EQUAL  &kp BSLH   &kp GRAVE
+        //│          │  Left    │  Down    │  Right   │  Vol++   │   │  F10     │  F1      │  F12     │  F11     │          │
+            HRML(&none, LEFT,      DOWN,      RIGHT)  &kp C_VOL_UP      &kp F10  HRMR(F1,     F12,       F11,      &none)
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │          │          │          │          │   │  &       │  _       │  +       │  │       │          │
-            &trans     &trans     &trans     &trans     &trans         &kp AMPS   &kp UNDER  &kp PLUS   &kp PIPE   &trans
+        //│  SYSTEM  │          │          │          │          │   │  F2      │  F7      │  F8      │  F9      │  SYSTEM  │
+           &kp SYSTEM  &none      &none      &none      &none          &kp F2     &kp F7     &kp F8     &kp F9    &kp SYSTEM
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &trans         &trans     &trans
+                                             &kp BASE   &kp BSPC       &kp SPACE  &kp ENTER
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        tri_layer {
+        system_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ RESET    │          │          │          │PROFILE 0 │   │          │          │          │          │  RESET   │
-           &sys_reset  &trans     &trans     &trans    &bt BT_SEL 0    &trans     &trans     &trans     &trans    &sys_reset
+        //│  RESET   │          │          │          │          │   │          │          │                         RESET  │
+           &sys_reset  &none      &none      &none      &none          &none      &none      &none      &none     &sys_reset
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│BOOTLOADER│          │          │          │PROFILE 1 │   │          │          │          │          │BOOTLOADER│
-          &bootloader  &trans     &trans     &trans    &bt BT_SEL 1    &trans     &trans     &trans     &trans    &bootloader
+        //│BOOTLOADER│          │          │          │          │   │                     │          │          │BOOTLOADER│
+           &bootloader &none      &none      &none      &none          &none      &none      &none      &none     &bootloader
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │          │          │ CLEAR BT │PROFILE 2 │   │          │          │          │          │          │
-            &trans     &trans     &trans    &bt BT_CLR &bt BT_SEL 2    &trans     &trans     &trans     &trans     &trans
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &none      &none      &none      &none      &none          &none      &none      &none      &none      &none
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &trans         &trans     &trans
+                                             &kp BASE   &kp BASE       &kp BASE   &kp BASE 
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
